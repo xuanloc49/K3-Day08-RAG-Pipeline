@@ -70,7 +70,32 @@ Xem code mẫu (DeepEval/RAGAS/TruLens) chi tiết trong `README.md` gốc mục
 ## Kiến Trúc Hệ Thống
 
 ```
-[Vẽ diagram kiến trúc ở đây]
+User Query
+    │
+    ├──→ Semantic Search (Task 5: Dense Retrieval, BAAI/bge-m3)
+    │         │
+    ├──→ Lexical Search (Task 6: BM25 Sparse Retrieval)
+    │         │
+    │    ┌────┴────┐
+    │    │  Merge   │──→ RRF Rerank (Task 7, k=60)
+    │    └─────────┘
+    │         │
+    │    Cosine score top-1 < 0.48?
+    │    ├─ YES → PageIndex Fallback (Task 8: Vectorless RAG)
+    │    └─ NO  → Hybrid Results
+    │         │
+    │    Reorder (front + back[::-1]) — chống lost-in-the-middle
+    │         │
+    │    LLM Generation (Task 10: OpenRouter, có Citation)
+    │         │
+    └──→ Answer + Sources
+```
+
+**Data Flow:**
+```
+PDF/DOCX (Task 1) ──┐
+                     ├──→ Markdown (Task 3) ──→ Chunking (Task 4, 800/100) ──→ ChromaDB
+JSON News (Task 2) ──┘
 ```
 
 ---
@@ -79,10 +104,10 @@ Xem code mẫu (DeepEval/RAGAS/TruLens) chi tiết trong `README.md` gốc mục
 
 | Thành viên | MSSV | Nhiệm vụ | Trạng thái |
 |-----------|------|----------|------------|
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+| Trần Xuân Lộc | 2A202601671 | Role 1: Team Leader & RAG Architect — Kiểm tra tham số chunking/RRF, review pipeline, điều phối nhóm | 🔄 Đang thực hiện |
+| Ngô Tuấn Hưng | 2A202601409 | Role 2: Data & Retrieval Specialist — Task 1, 2, 4, 5, 7, 9 | 🔄 Đang thực hiện |
+| Đào Ngọc Bích | 2A202601745 | Role 3: Frontend & Chatbot Developer — Task 8, 10, app.py | 🔄 Đang thực hiện |
+| Vũ Đức Anh | 2A202601191 | Role 4: Evaluation & QA Engineer — Task 3, 6, golden_dataset, eval_pipeline, results.md | 🔄 Đang thực hiện |
 
 ---
 

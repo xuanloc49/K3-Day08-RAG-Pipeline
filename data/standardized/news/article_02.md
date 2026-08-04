@@ -1,0 +1,29 @@
+# TUẦN SINH HOẠT CÔNG DÂN - SINH VIÊN ĐẦU KHÓA DÀNH CHO SINH VIÊN K69, NĂM HỌC 2024-2025
+
+**Source:** https://ctsv.huce.edu.vn/tuan-sinh-hoat-cong-dan-sinh-vien-dau-khoa-danh-cho-sinh-vien-k69-nam-hoc-2024-2025
+**Crawled:** 2026-08-04T10:26:00+07:00
+
+---
+
+# TUẦN SINH HOẠT CÔNG DÂN - SINH VIÊN ĐẦU KHÓA DÀNH CHO SINH VIÊN K69, NĂM HỌC 2024-2025
+
+**Thời gian đăng:** Thứ năm, 05/09/2024, 11:30 (GMT+07)
+
+Ngày 04/9/2024, Trường Đại học Xây dựng Hà Nội (ĐHXDHN) khai mạc và triển khai giảng dạy những nội dung đầu tiên trong Tuần sinh hoạt Công dân - Sinh viên đầu khóa dành cho sinh viên K69, năm học 2024-2025 cho hơn 4.500 tân sinh viên.
+
+Tuần sinh hoạt Công dân - Sinh viên đầu khóa được tổ chức giúp các bạn tân sinh viên nắm được những thông tin chung và Quy chế đào tạo của Trường ĐHXDHN; hướng dẫn tân sinh viên phương pháp học đại học hiệu quả.
+
+Ngoài ra, Tuần Công dân - sinh viên cũng giới thiệu cho các tân sinh viên những kiến thức về đời sống chính trị - kinh tế - xã hội của đất nước, trên cơ sở đó vận dụng sáng tạo, phù hợp vào quá trình học tập trong Trường; nâng cao nhận thức của sinh viên về quyền, nghĩa vụ, ý thức trách nhiệm của công dân - sinh viên trong việc thực hiện chủ trương, đường lối của Đảng, chính sách, pháp luật của Nhà nước, quy định của ngành Giáo dục, đáp ứng mục tiêu, yêu cầu đào tạo và rèn luyện đối với sinh viên.
+
+Cũng trong Tuần sinh hoạt công dân - sinh viên, các báo cáo viên sẽ hướng dẫn các bạn sinh viên sử dụng, khai thác nguồn lực của Nhà trường (hệ thống phần mềm chuyển đổi số, cổng thông tin quản lý đào tạo, thư viện số - thư viện điện tử, quy trình hướng dẫn - hỗ trợ sinh viên thông qua hệ thống một cửa online, hỗ trợ sinh viên tìm nhà trọ, …).
+
+### Nội dung phát biểu & Báo cáo viên:
+
+- **PGS.TS Hoàng Tùng - Hiệu trưởng Nhà trường**: Phát biểu khai mạc, chúc mừng tân sinh viên K69 và cam kết Nhà trường luôn tạo điều kiện tốt nhất đồng hành cùng sinh viên.
+- **PGS.TS Phạm Tuấn Hùng - Trưởng phòng Khảo thí và Đảm bảo chất lượng giáo dục**: Giới thiệu phương pháp học Đại học.
+- **Đại uý Nguyễn Thái Cơ - Bí thư Chi đoàn, Khoa Cảnh sát điều tra tội phạm về ma tuý (Học viện CSND)**: Giới thiệu tác hại về ma túy.
+- **ThS. Phạm Hữu Tùng - Phó Trưởng phòng Quản lý đào tạo**: Giới thiệu về thông tin quy chế đào tạo.
+- **TS. Nguyễn Trung Thành - Giám đốc Thư viện**: Giới thiệu và hướng dẫn khai thác tài nguyên Thư viện Trường ĐHXDHN.
+
+### Hình thức tổ chức:
+Tuần Công dân - Sinh viên năm học 2024-2025 được tổ chức trực tiếp kết hợp với trực tuyến. Mỗi sinh viên tham gia 01 buổi trực tiếp tại hội trường G3 và 03 buổi trực tuyến, sau đó làm bài thu hoạch để đánh giá kiến thức.

@@ -1,0 +1,26 @@
+# VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VII
+
+**Source:** https://ctsv.huce.edu.vn/vong-binh-chon-cuoc-thi-hoc-sinh-sinh-vien-voi-y-tuong-khoi-nghiep-lan-thu-vii-2
+**Crawled:** 2026-08-04T10:24:00+07:00
+
+---
+
+# VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VII
+
+**Thời gian đăng:** Thứ hai, 17/03/2025, 12:30 (GMT+07)
+
+HÃY BÌNH CHỌN CHO CÁC DỰ ÁN KHỞI NGHIỆP CỦA HUCE Ở VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VII (SV_STARTUP - LẦN THỨ VII)
+
+⏰ **Thời gian:** Từ 12 giờ ngày 17 tháng 3 năm 2025 đến hết 12 giờ ngày 31 tháng 3 năm 2025.
+
+⭐️ **Hướng dẫn bình chọn dự án cụ thể như sau:**
+
+- **Bước 1:** Truy cập vào link: [https://dean1665.vn/svs2024/binhchon/](https://dean1665.vn/svs2024/binhchon/)
+- **Bước 2:** Các bạn tìm tên hai dự án: “Biến phế thải công nghiệp thành vật liệu chống cháy - cách nhiệt” và "Nghiên cứu, phát triển và nâng cấp máy xử lý nước công nghệ pin điện dung"
+- **Bước 3:** Các bạn click “Chi tiết” để xem thông tin mô tả, ảnh sản phẩm và thông tin của dự án. Để bình chọn cho dự án, click vào “Bình chọn dự án”.
+- **Bước 4:** Các bạn click vào “Chọn thêm dự án” để tiếp tục bình chọn cho các dự án Bạn muốn. Sau khi đã chọn đủ các dự án (tối đa không quá 5 dự án), thì chuyển sang phần Cho điểm, Đánh giá các dự án theo 3 tiêu chí BTC đã quy định với thang điểm từ 1 đến 5 cho mỗi tiêu chí.
+- **Bước 5:** Sau khi đánh giá xong, các bạn hãy nhập Họ và tên, email rồi click vào mục xác thực “Tôi không phải người máy” và bấm vào nút “Đánh giá” để thực hiện bình chọn.
+- **Bước 6:** Sau khi nhập xong thông tin cá nhân, để hoàn thiện việc đánh giá và xác nhận tài khoản hợp lệ, hệ thống sẽ gửi mã bình chọn về email. Sau khi nhập mã này, click “Đánh giá” để hoàn thiện quá trình bình chọn.
+
+⭐️ **Nếu bình chọn thành công, màn hình sẽ hiển thị như sau:**
+“Cảm ơn bạn đã tham gia đánh giá. Ban tổ chức đã ghi nhận kết quả của Bạn!” Và màn hình sẽ chuyển về trang chủ của Cổng khởi nghiệp [dean1665.vn](https://dean1665.vn).

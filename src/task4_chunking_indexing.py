@@ -42,14 +42,14 @@ CHROMA_DIR = Path(__file__).parent.parent / "chroma_db"
 # =============================================================================
 
 # CHUNKING STRATEGY:
-# - CHUNK_SIZE = 500: Đủ chứa 1 đoạn văn hoàn chỉnh (~80-120 từ), giúp giữ trọn vẹn ý nghĩa
-#   của quy định/chính sách đại học mà không làm loãng thông tin embedding.
-# - CHUNK_OVERLAP = 50: Chiếm 10% chunk size, đảm bảo các câu hoặc thuật ngữ nằm ở ranh giới
+# - CHUNK_SIZE = 800: Đủ lớn để chứa trọn vẹn 1-2 đoạn văn quy định/chính sách (~150-200 từ),
+#   giúp embedding nắm bắt ngữ cảnh đầy đủ hơn cho tài liệu đại học (nhiều thuật ngữ chuyên môn).
+# - CHUNK_OVERLAP = 100: Chiếm 12.5% chunk size, đảm bảo các câu hoặc thuật ngữ nằm ở ranh giới
 #   giữa 2 chunk không bị cắt đứt quãng ngữ nghĩa.
 # - CHUNKING_METHOD = "recursive": Sử dụng RecursiveCharacterTextSplitter để ưu tiên cắt theo
 #   xuống dòng, dấu chấm câu trước khi cắt theo từ, giữ cấu trúc tự nhiên của văn bản.
-CHUNK_SIZE = 500        
-CHUNK_OVERLAP = 50      
+CHUNK_SIZE = 800        
+CHUNK_OVERLAP = 100     
 CHUNKING_METHOD = "recursive"  # "recursive" | "markdown_header" | "semantic"
 
 # EMBEDDING MODEL:
