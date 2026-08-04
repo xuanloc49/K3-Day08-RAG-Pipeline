@@ -1,0 +1,26 @@
+# VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VI
+
+**Source:** https://ctsv.huce.edu.vn/vong-binh-chon-cuoc-thi-hoc-sinh-sinh-vien-voi-y-tuong-khoi-nghiep-lan-thu-vi
+**Crawled:** 2026-08-04T10:28:00+07:00
+
+---
+
+# VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VI
+
+**Thời gian đăng:** Thứ hai, 26/02/2024, 10:16 (GMT+07)
+
+HÃY BÌNH CHỌN CHO DỰ ÁN “SẢN XUẤT SẢN PHẨM GỐM TỪ CÔNG NGHỆ IN 3D” CỦA HUCE Ở VÒNG BÌNH CHỌN - CUỘC THI “HỌC SINH, SINH VIÊN VỚI Ý TƯỞNG KHỞI NGHIỆP” LẦN THỨ VI
+
+⏰ **Thời gian:** Từ 12 giờ ngày 19 tháng 2 năm 2024 đến hết 12 giờ ngày 9 tháng 3 năm 2024.
+
+⭐️ **Hướng dẫn bình chọn dự án cụ thể như sau:**
+
+- **Bước 1:** Truy cập vào link: [https://dean1665.vn/svs2023/binhchon/](https://dean1665.vn/svs2023/binhchon/)
+- **Bước 2:** Các bạn tìm tên dự án “SẢN XUẤT SẢN PHẨM GỐM TỪ CÔNG NGHỆ IN 3D”
+- **Bước 3:** Các bạn click “Chi tiết” để xem thông tin mô tả, ảnh sản phẩm và thông tin của dự án. Để bình chọn cho dự án, click vào “Bình chọn dự án”.
+- **Bước 4:** Các bạn click vào “Chọn thêm dự án” để tiếp tục bình chọn cho các dự án Bạn muốn. Sau khi đã chọn đủ các dự án (tối đa không quá 5 dự án), thì chuyển sang phần Cho điểm, Đánh giá các dự án theo 3 tiêu chí BTC đã quy định với thang điểm từ 1 đến 5 cho mỗi tiêu chí.
+- **Bước 5:** Sau khi đánh giá xong, các bạn hãy nhập Họ và tên, email rồi click vào mục xác thực “Tôi không phải người máy” và bấm vào nút “Đánh giá” để thực hiện bình chọn.
+- **Bước 6:** Sau khi nhập xong thông tin cá nhân, để hoàn thiện việc đánh giá và xác nhận tài khoản hợp lệ, hệ thống sẽ gửi mã bình chọn về email. Sau khi nhập mã này, click “Đánh giá” để hoàn thiện quá trình bình chọn.
+
+⭐️ **Nếu bình chọn thành công, màn hình sẽ hiển thị như sau:**
+“Cảm ơn bạn đã tham gia đánh giá. Ban tổ chức đã ghi nhận kết quả của Bạn!” Và màn hình sẽ chuyển về trang chủ của Cổng khởi nghiệp [dean1665.vn](https://dean1665.vn).
