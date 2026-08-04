@@ -79,10 +79,16 @@ Xem code mẫu (DeepEval/RAGAS/TruLens) chi tiết trong `README.md` gốc mục
 
 | Thành viên | MSSV | Nhiệm vụ | Trạng thái |
 |-----------|------|----------|------------|
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+| Tran Xuan Loc | 2A202601671 | Role 1 — Team Leader & RAG Architect: điều phối, ghép `supervisor.py` & Task 9 | Đang làm |
+| Ngo Tuan Hung | 2A202601409 | Role 2 — Data & Retrieval Specialist: Task 1–3 (thu thập, chuẩn hoá dữ liệu), Task 4–5 (ChromaDB) | Task 1,4 done (theo commit); Task 2,3,5 xem ghi chú |
+| Dao Ngoc Bich | 2A202601745 | Role 3 — Frontend & Chatbot Developer: `app.py` + Task 10 (Generation có Citation) | **Done** — verify bằng LLM thật + AppTest |
+| Vu Duc Anh | 2A202601191 | Role 4 — Evaluation & QA Engineer: `golden_dataset.json`, `eval_pipeline.py` (RAGAS), `results.md` | Đang làm |
+
+> Ghi chú: Task 2 (crawl news) và Task 5 (semantic search) chính thức thuộc Role 2, nhưng Bích đã
+> code + chạy thật trước để không chặn tiến độ chung (Task 2 pass 4/4 test; Task 5 chờ `chroma_db/`
+> từ Task 4 để verify). Task 8 (PageIndex) không nằm trong bảng 4-role gốc — Bích cũng đã code sẵn,
+> chờ `PAGEINDEX_API_KEY` để chạy thật. Nhóm nên thống nhất lại ai đứng tên điểm cá nhân cho các
+> phần này.
 
 ---
 
