@@ -12,10 +12,14 @@ Chunking options (langchain-text-splitters):
     - MarkdownHeaderTextSplitter: tốt cho file có heading
     - SemanticChunker: dùng embedding để tách (nâng cao)
 
-Embedding model options:
-    - sentence-transformers/all-MiniLM-L6-v2 (384 dim, nhẹ)
-    - BAAI/bge-m3 (1024 dim, multilingual, tốt cho cả tiếng Việt lẫn tiếng Anh)
-    - OpenAI text-embedding-3-small (1536 dim, API)
+Embedding model options (chọn 1, cân nhắc đánh đổi cài đặt nặng vs cần API key):
+    - sentence-transformers/all-MiniLM-L6-v2 hoặc BAAI/bge-m3 — chạy local, không
+      cần API key, nhưng cài nặng (~1-2GB vì kéo theo torch)
+    - Google models/text-embedding-004 (768 dim) — nhẹ, cần GEMINI_API_KEY
+    - OpenAI text-embedding-3-small (1536 dim) — nhẹ, cần OPENAI_API_KEY
+    Gợi ý: đọc EMBEDDING_PROVIDER từ .env (os.getenv("EMBEDDING_PROVIDER", "sentence_transformers"))
+    để cả nhóm có thể đổi provider mà không sửa code — nhớ đổi provider phải xoá
+    chroma_db/ cũ và reindex vì dimension khác nhau (1024/768/1536) không tương thích ngược.
 
 Vector store options:
     - ChromaDB (khuyến cáo: đơn giản, local persistent, không cần Docker)
