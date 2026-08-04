@@ -102,23 +102,33 @@ def upload_documents() -> dict:
 
     md_files = list(STANDARDIZED_DIR.rglob("*.md"))
     for md_file in md_files:
-        pdf_path = PDF_STAGING_DIR / (md_file.stem + ".pdf")
-        _markdown_to_pdf(md_file, pdf_path)
+        # Bỏ qua sớm file rỗng/toàn khoảng trắng (lỗi convert ở Task 3) — không tốn lượt
+        # gọi API cho PDF chắc chắn sẽ bị PageIndex từ chối ("All pages are blank").
+        if not md_file.read_text(encoding="utf-8").strip():
+            print(f"  ⚠ Bỏ qua {md_file.name}: file rỗng (có thể Task 3 convert lỗi)")
+            continue
 
-        resp = client.submit_document(str(pdf_path))
-        doc_id = resp["doc_id"]
-        print(f"  ⏳ Uploaded: {md_file.name} -> {doc_id}, đang chờ xử lý cây mục lục...")
+        try:
+            pdf_path = PDF_STAGING_DIR / (md_file.stem + ".pdf")
+            _markdown_to_pdf(md_file, pdf_path)
 
-        # Đợi PageIndex xử lý xong (tree generation + OCR) trước khi có thể query
-        for _ in range(POLL_MAX_ATTEMPTS):
-            if client.is_retrieval_ready(doc_id):
-                break
-            time.sleep(POLL_INTERVAL_SECONDS)
-        else:
-            print(f"  ⚠ {md_file.name}: chưa sẵn sàng sau {POLL_MAX_ATTEMPTS * POLL_INTERVAL_SECONDS}s, vẫn lưu doc_id để dùng sau")
+            resp = client.submit_document(str(pdf_path))
+            doc_id = resp["doc_id"]
+            print(f"  ⏳ Uploaded: {md_file.name} -> {doc_id}, đang chờ xử lý cây mục lục...")
 
-        doc_ids[md_file.name] = doc_id
-        print(f"  ✓ Sẵn sàng: {md_file.name} -> {doc_id}")
+            # Đợi PageIndex xử lý xong (tree generation + OCR) trước khi có thể query
+            for _ in range(POLL_MAX_ATTEMPTS):
+                if client.is_retrieval_ready(doc_id):
+                    break
+                time.sleep(POLL_INTERVAL_SECONDS)
+            else:
+                print(f"  ⚠ {md_file.name}: chưa sẵn sàng sau {POLL_MAX_ATTEMPTS * POLL_INTERVAL_SECONDS}s, vẫn lưu doc_id để dùng sau")
+
+            doc_ids[md_file.name] = doc_id
+            print(f"  ✓ Sẵn sàng: {md_file.name} -> {doc_id}")
+        except Exception as e:
+            print(f"  ✗ Lỗi upload {md_file.name}: {e}")
+            continue
 
     DOC_IDS_FILE.parent.mkdir(parents=True, exist_ok=True)
     DOC_IDS_FILE.write_text(json.dumps(doc_ids, ensure_ascii=False, indent=2))
