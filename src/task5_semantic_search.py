@@ -7,10 +7,35 @@ Yêu cầu:
     - Input: query string + top_k
     - Output: danh sách chunks có score, sorted descending
     - Phải tương thích với embedding model và vector store ở Task 4
+
+Lưu ý: Task 4 (get_collection/get_embedding_model) chưa export helper riêng, nên
+module này tự quản lý client ChromaDB + model embedding, dùng chung config
+(CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL) đã khai báo ở task4_chunking_indexing.
+Model được cache module-level để không load lại mỗi lần gọi semantic_search().
 """
 
-from typing import Any, Dict, List
-from src.task4_chunking_indexing import get_collection, get_embedding_model, EMBEDDING_MODEL
+from .task4_chunking_indexing import CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL
+
+_model = None
+_collection = None
+
+
+def _get_model():
+    global _model
+    if _model is None:
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer(EMBEDDING_MODEL)
+    return _model
+
+
+def _get_collection():
+    global _collection
+    if _collection is None:
+        import chromadb
+        client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+        _collection = client.get_collection(COLLECTION_NAME)
+    return _collection
+
 
 
 def semantic_search(query: str, top_k: int = 10) -> List[Dict[str, Any]]:
@@ -29,10 +54,10 @@ def semantic_search(query: str, top_k: int = 10) -> List[Dict[str, Any]]:
         }
         Sorted by score descending.
     """
-    model = get_embedding_model(EMBEDDING_MODEL)
+    model = _get_model()
     query_vector = model.encode(query).tolist()
 
-    collection = get_collection()
+    collection = _get_collection()
     results = collection.query(
         query_embeddings=[query_vector],
         n_results=top_k,
@@ -40,19 +65,12 @@ def semantic_search(query: str, top_k: int = 10) -> List[Dict[str, Any]]:
     )
 
     output = []
-    if results and results.get("documents") and len(results["documents"]) > 0:
-        docs = results["documents"][0]
-        metas = results["metadatas"][0] if results.get("metadatas") else [{}] * len(docs)
-        dists = results["distances"][0] if results.get("distances") else [0.0] * len(docs)
-
-        for doc, meta, dist in zip(docs, metas, dists):
-            # Cosine distance trong ChromaDB (HNSW space: cosine) -> similarity = 1.0 - distance
-            score = max(0.0, 1.0 - dist)
-            output.append({
-                "content": doc,
-                "score": round(float(score), 4),
-                "metadata": meta
-            })
+    docs = results["documents"][0] if results["documents"] else []
+    metas = results["metadatas"][0] if results["metadatas"] else []
+    dists = results["distances"][0] if results["distances"] else []
+    for doc, meta, dist in zip(docs, metas, dists):
+        score = max(0.0, 1.0 - dist)  # cosine distance → similarity
+        output.append({"content": doc, "score": round(score, 4), "metadata": meta})
 
     output.sort(key=lambda x: x["score"], reverse=True)
     return output[:top_k]

@@ -116,13 +116,14 @@ if query:
         with st.spinner("Đang tìm kiếm tài liệu và tổng hợp câu trả lời..."):
             retrieval_source = "hybrid"
             try:
+                from src.task10_generation import generate_with_citation
                 response = generate_with_citation(query, top_k=top_k)
                 answer = response.get("answer", "Chưa thể trả lời.")
                 sources = response.get("sources", [])
                 retrieval_source = response.get("retrieval_source", "hybrid")
 
-            except NotImplementedError:
-                answer = "⚠️ **Task 10 chưa được implement.** Hãy hoàn thành `src/task10_generation.py` để kết nối pipeline vào UI!"
+            except NotImplementedError as e:
+                answer = f"⚠️ **Pipeline chưa sẵn sàng:** {e}. Kiểm tra Task 5-9 (retrieval) đã implement chưa."
                 sources = []
             except Exception as e:
                 answer = f"❌ **Lỗi khi chạy RAG Pipeline:** {e}"
