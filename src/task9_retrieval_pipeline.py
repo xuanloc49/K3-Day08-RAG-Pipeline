@@ -48,77 +48,106 @@ def retrieve(
     top_k: int = DEFAULT_TOP_K,
     score_threshold: float = SCORE_THRESHOLD,
     use_reranking: bool = True,
+    use_semantic: bool = True,
+    use_bm25: bool = True,
 ) -> list[dict]:
     """
-    Retrieval pipeline hoàn chỉnh với fallback logic.
-
-    Pipeline:
-        Query
-          ├→ Semantic Search → dense_results (giữ điểm cosine gốc)
-          ├→ Lexical Search  → sparse_results
-          │
-          ├→ Merge (RRF) → merged_results
-          ├→ Rerank → reranked_results
-          │
-          └→ If dense_results[0]["score"] < threshold:
-                └→ PageIndex Vectorless → fallback_results
+    Retrieval pipeline hoàn chỉnh với fallback logic và các mode bật/tắt demo.
 
     Args:
         query: Câu truy vấn
         top_k: Số lượng kết quả cuối cùng
         score_threshold: Ngưỡng điểm cosine gốc tối thiểu (KHÔNG phải điểm RRF)
         use_reranking: Có áp dụng reranking hay không
+        use_semantic: Có áp dụng Semantic Search (Dense) hay không
+        use_bm25: Có áp dụng Lexical Search (BM25 Sparse) hay không
 
     Returns:
         List of {
             'content': str,
             'score': float,
             'metadata': dict,
-            'source': str  # 'hybrid' hoặc 'pageindex'
+            'source': str  # 'hybrid', 'semantic', 'bm25', 'pageindex'
         }
     """
-    # Step 1: Song song chạy semantic + lexical
-    try:
-        dense_results = semantic_search(query, top_k=top_k * 2)
-    except Exception as e:
-        print(f"  ⚠ Semantic search error: {e}")
-        dense_results = []
+    dense_results = []
+    sparse_results = []
 
-    try:
-        sparse_results = lexical_search(query, top_k=top_k * 2)
-    except Exception as e:
-        print(f"  ⚠ Lexical search error: {e}")
-        sparse_results = []
+    # Step 1: Chạy semantic search nếu được bật
+    if use_semantic:
+        try:
+            dense_results = semantic_search(query, top_k=top_k * 2)
+        except Exception as e:
+            print(f"  ⚠ Semantic search error: {e}")
+            dense_results = []
 
-    # Step 2: Merge bằng RRF
+    # Step 2: Chạy lexical search nếu được bật
+    if use_bm25:
+        try:
+            sparse_results = lexical_search(query, top_k=top_k * 2)
+        except Exception as e:
+            print(f"  ⚠ Lexical search error: {e}")
+            sparse_results = []
+
+    # Gom nhóm các danh sách tìm kiếm được
     ranked_lists = []
     if dense_results:
         ranked_lists.append(dense_results)
     if sparse_results:
         ranked_lists.append(sparse_results)
 
-    if ranked_lists:
-        merged = rerank_rrf(ranked_lists, top_k=top_k * 2)
+    # Xác định nhãn source mặc định
+    if use_semantic and use_bm25:
+        default_source_tag = "hybrid"
+    elif use_semantic:
+        default_source_tag = "semantic"
+    elif use_bm25:
+        default_source_tag = "bm25"
     else:
+        default_source_tag = "none"
+
+    # Step 3: Merge & Rerank
+    if not ranked_lists:
         merged = []
+    elif use_reranking:
+        if len(ranked_lists) > 1 or RERANK_METHOD == "rrf":
+            merged = rerank_rrf(ranked_lists, top_k=top_k * 2)
+        else:
+            merged = ranked_lists[0][:top_k * 2]
+
+        if RERANK_METHOD != "rrf" and merged:
+            try:
+                merged = rerank(query, merged, top_k=top_k, method=RERANK_METHOD)
+            except Exception as e:
+                print(f"  ⚠ Reranking error with method {RERANK_METHOD}: {e}")
+                merged = merged[:top_k]
+    else:
+        # Khi KHÔNG dùng reranking: gộp danh sách loại bỏ trùng lặp nội dung
+        seen_content = set()
+        merged = []
+        for r_list in ranked_lists:
+            for item in r_list:
+                if item["content"] not in seen_content:
+                    seen_content.add(item["content"])
+                    merged.append(item.copy())
 
     for item in merged:
-        item["source"] = "hybrid"
+        if "source" not in item or not item["source"]:
+            item["source"] = default_source_tag
 
-    # Step 3: Rerank nếu cấu hình RERANK_METHOD khác rrf (RRF đã merge ở trên)
-    if use_reranking and merged and RERANK_METHOD != "rrf":
-        try:
-            final_results = rerank(query, merged, top_k=top_k, method=RERANK_METHOD)
-        except Exception as e:
-            print(f"  ⚠ Reranking error with method {RERANK_METHOD}: {e}")
-            final_results = merged[:top_k]
-    else:
-        final_results = merged[:top_k]
+    final_results = merged[:top_k]
 
-    # Step 4: Check threshold DÙNG ĐIỂM COSINE GỐC (dense_results), KHÔNG PHẢI RRF
-    best_score = dense_results[0]["score"] if dense_results else 0.0
-    if best_score < score_threshold:
-        print(f"  ⚠ Semantic best score ({best_score:.3f}) < threshold ({score_threshold})")
+    # Step 4: Check threshold & Fallback Logic
+    need_fallback = False
+    if use_semantic and dense_results:
+        best_score = dense_results[0]["score"]
+        if best_score < score_threshold:
+            print(f"  ⚠ Semantic best score ({best_score:.3f}) < threshold ({score_threshold})")
+            need_fallback = True
+    elif not final_results:
+        need_fallback = True
+
+    if need_fallback:
         try:
             fallback = pageindex_search(query, top_k=top_k)
             if fallback:
@@ -126,7 +155,7 @@ def retrieve(
         except Exception as e:
             print(f"  ⚠ PageIndex fallback error: {e}")
 
-    return final_results[:top_k]
+    return final_results
 
 
 if __name__ == "__main__":

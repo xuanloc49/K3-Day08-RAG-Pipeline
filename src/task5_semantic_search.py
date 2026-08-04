@@ -14,6 +14,8 @@ module này tự quản lý client ChromaDB + model embedding, dùng chung confi
 Model được cache module-level để không load lại mỗi lần gọi semantic_search().
 """
 
+from typing import List, Dict, Any
+
 from .task4_chunking_indexing import CHROMA_DIR, COLLECTION_NAME, EMBEDDING_MODEL
 
 _model = None

@@ -55,12 +55,25 @@ with st.sidebar:
             st.session_state["pending_query"] = s
 
     st.divider()
-    st.subheader("⚙️ Thiết lập")
-    top_k = st.slider("Số chunks retrieval (top_k)", 3, 10, 5)
+    st.subheader("⚙️ Cấu Hình Retrieval (Demo Mode)")
+    
+    use_semantic = st.toggle("🧠 Semantic Search (Dense)", value=True, help="Tìm kiếm ngữ nghĩa theo Vector Embeddings")
+    use_bm25 = st.toggle("🔍 BM25 Search (Lexical)", value=True, help="Tìm kiếm từ khóa chính xác bằng thuật toán BM25")
+    use_rerank = st.toggle("⚡ Reranking (RRF / Ranker)", value=True, help="Tái sắp xếp thứ hạng kết quả từ các phương pháp tìm kiếm")
+    
+    top_k = st.slider("Số chunks retrieval (top_k)", 1, 10, 5)
 
     st.divider()
-    st.caption("**Kiến trúc hệ thống:**")
-    st.caption("Hybrid Retrieval (Semantic + BM25) → RRF Rerank → PageIndex Fallback → LLM Generation có Citation")
+    st.caption("**Trạng thái Pipeline:**")
+    active_modes = []
+    if use_semantic:
+        active_modes.append("Dense")
+    if use_bm25:
+        active_modes.append("BM25")
+    mode_str = " + ".join(active_modes) if active_modes else "Vectorless Only"
+    if use_rerank and active_modes:
+        mode_str += " → Rerank"
+    st.info(f"📍 Mode hiện tại: **{mode_str}**")
 
 # =============================================================================
 # SESSION STATE
@@ -84,14 +97,15 @@ for msg in st.session_state.messages:
         st.markdown(msg["content"])
         if msg["role"] == "assistant" and "sources" in msg and msg["sources"]:
             retrieval_src = msg.get("retrieval_source", "")
-            header = f"📚 Nguồn tham khảo ({len(msg['sources'])} chunks" + (f" | {retrieval_src}" if retrieval_src else "") + ")"
+            header = f"📚 Nguồn tham khảo ({len(msg['sources'])} chunks" + (f" | Mode: {retrieval_src}" if retrieval_src else "") + ")"
             with st.expander(header):
                 for i, src in enumerate(msg["sources"], 1):
                     meta = src.get("metadata", {})
                     source_name = meta.get("source", "Unknown")
                     doc_type = meta.get("type", "unknown")
                     score = src.get("score", 0)
-                    st.markdown(f"**[{i}] {source_name}** `{doc_type}` | score: `{score:.4f}`")
+                    chunk_source = src.get("source", retrieval_src)
+                    st.markdown(f"**[{i}] {source_name}** `{doc_type}` | score: `{score:.4f}` | search: `{chunk_source}`")
                     st.text(src.get("content", "")[:300] + "...")
                     st.divider()
 
@@ -114,13 +128,19 @@ if query:
     # Sinh câu trả lời từ RAG Pipeline
     with st.chat_message("assistant"):
         with st.spinner("Đang tìm kiếm tài liệu và tổng hợp câu trả lời..."):
-            retrieval_source = "hybrid"
+            retrieval_source = mode_str
             try:
                 from src.task10_generation import generate_with_citation
-                response = generate_with_citation(query, top_k=top_k)
+                response = generate_with_citation(
+                    query,
+                    top_k=top_k,
+                    use_semantic=use_semantic,
+                    use_bm25=use_bm25,
+                    use_rerank=use_rerank,
+                )
                 answer = response.get("answer", "Chưa thể trả lời.")
                 sources = response.get("sources", [])
-                retrieval_source = response.get("retrieval_source", "hybrid")
+                retrieval_source = response.get("retrieval_source", mode_str)
 
             except NotImplementedError as e:
                 answer = f"⚠️ **Pipeline chưa sẵn sàng:** {e}. Kiểm tra Task 5-9 (retrieval) đã implement chưa."
@@ -132,14 +152,15 @@ if query:
             st.markdown(answer)
 
             if sources:
-                header = f"📚 Nguồn tham khảo ({len(sources)} chunks" + (f" | {retrieval_source}" if retrieval_source else "") + ")"
+                header = f"📚 Nguồn tham khảo ({len(sources)} chunks | Mode: {retrieval_source})"
                 with st.expander(header):
                     for i, src in enumerate(sources, 1):
                         meta = src.get("metadata", {})
                         source_name = meta.get("source", "Unknown")
                         doc_type = meta.get("type", "unknown")
                         score = src.get("score", 0)
-                        st.markdown(f"**[{i}] {source_name}** `{doc_type}` | score: `{score:.4f}`")
+                        chunk_source = src.get("source", retrieval_source)
+                        st.markdown(f"**[{i}] {source_name}** `{doc_type}` | score: `{score:.4f}` | search: `{chunk_source}`")
                         st.text(src.get("content", "")[:300] + "...")
                         st.divider()
 
