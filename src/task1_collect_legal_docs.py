@@ -6,20 +6,10 @@ Hướng dẫn:
     2. Tải về và lưu vào data/landing/legal/
     3. Đặt tên file rõ ràng, không dấu, mô tả đúng nội dung.
 
-Gợi ý nguồn (ví dụ trang công khai RMIT Vietnam — rmit.edu.vn):
-    - https://www.rmit.edu.vn/study-at-rmit/tuition-fees
-    - https://www.rmit.edu.vn/study-at-rmit/scholarships/...
-    - https://www.rmit.edu.vn/students/my-studies/fees-and-payments
-
 Gợi ý văn bản (chủ đề dịch vụ đại học):
     - Học phí & phương thức thanh toán (Tuition Fees)
     - Chính sách học bổng (Scholarship eligibility)
-    - Quy định ký túc xá / hỗ trợ chỗ ở (Accommodation Services)
-    - Hướng dẫn đăng ký học phần qua cổng thông tin sinh viên (Course Registration)
-
-Lưu ý: một số trang trường (vd VinUni, Fulbright) chặn bot crawler mặc định (HTTP 403) —
-không phải lỗi của bạn, đó là cấu hình WAF/Cloudflare phía server. Đổi sang trang khác
-thay vì cố vượt qua, và chỉ dùng nguồn công khai/được phép chia sẻ.
+    - Quy định ký túc xá / văn hóa học đường
 """
 
 from pathlib import Path
@@ -33,22 +23,22 @@ def setup_directory():
     print(f"✓ Thư mục đã sẵn sàng: {DATA_DIR}")
 
 
-# TODO: Tải file PDF/DOCX về DATA_DIR
-# Có thể tải thủ công hoặc viết script download nếu có direct link.
-#
-# Ví dụ nếu có direct link:
-#
-# import requests
-#
-# def download_file(url: str, filename: str):
-#     response = requests.get(url)
-#     filepath = DATA_DIR / filename
-#     filepath.write_bytes(response.content)
-#     print(f"✓ Đã tải: {filepath}")
-#
-# Nếu trang là HTML thuần (không phải PDF sẵn), có thể convert nội dung text
-# thành PDF đơn giản bằng thư viện fpdf2 (đã có trong requirements.txt).
+def verify_collected_files():
+    """Kiểm tra và in danh sách các file pháp luật đã thu thập."""
+    valid_extensions = {".pdf", ".docx", ".doc"}
+    files = [f for f in DATA_DIR.iterdir() if f.is_file() and f.suffix.lower() in valid_extensions]
+    
+    print(f"\n--- Đã tìm thấy {len(files)} văn bản pháp luật trong {DATA_DIR} ---")
+    for idx, f in enumerate(files, 1):
+        size_kb = f.stat().st_size / 1024
+        print(f"  {idx}. {f.name} ({size_kb:.2f} KB)")
+        
+    if len(files) >= 3:
+        print("✓ Đạt yêu cầu Task 1 (Tối thiểu 3 văn bản).")
+    else:
+        print(f"✗ Chưa đạt: Cần tối thiểu 3 file (Hiện có {len(files)}).")
 
 
 if __name__ == "__main__":
     setup_directory()
+    verify_collected_files()
