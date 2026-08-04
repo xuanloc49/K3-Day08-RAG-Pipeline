@@ -37,7 +37,8 @@ def _get_collection():
     return _collection
 
 
-def semantic_search(query: str, top_k: int = 10) -> list[dict]:
+
+def semantic_search(query: str, top_k: int = 10) -> List[Dict[str, Any]]:
     """
     Tìm kiếm ngữ nghĩa sử dụng vector similarity.
 

@@ -19,6 +19,8 @@ load_dotenv()
 PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.task10_generation import generate_with_citation
+
 # =============================================================================
 # PAGE CONFIG
 # =============================================================================
@@ -81,7 +83,9 @@ for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if msg["role"] == "assistant" and "sources" in msg and msg["sources"]:
-            with st.expander(f"📚 Nguồn tham khảo ({len(msg['sources'])} chunks)"):
+            retrieval_src = msg.get("retrieval_source", "")
+            header = f"📚 Nguồn tham khảo ({len(msg['sources'])} chunks" + (f" | {retrieval_src}" if retrieval_src else "") + ")"
+            with st.expander(header):
                 for i, src in enumerate(msg["sources"], 1):
                     meta = src.get("metadata", {})
                     source_name = meta.get("source", "Unknown")
@@ -110,11 +114,13 @@ if query:
     # Sinh câu trả lời từ RAG Pipeline
     with st.chat_message("assistant"):
         with st.spinner("Đang tìm kiếm tài liệu và tổng hợp câu trả lời..."):
+            retrieval_source = "hybrid"
             try:
                 from src.task10_generation import generate_with_citation
                 response = generate_with_citation(query, top_k=top_k)
                 answer = response.get("answer", "Chưa thể trả lời.")
                 sources = response.get("sources", [])
+                retrieval_source = response.get("retrieval_source", "hybrid")
 
             except NotImplementedError as e:
                 answer = f"⚠️ **Pipeline chưa sẵn sàng:** {e}. Kiểm tra Task 5-9 (retrieval) đã implement chưa."
@@ -126,7 +132,8 @@ if query:
             st.markdown(answer)
 
             if sources:
-                with st.expander(f"📚 Nguồn tham khảo ({len(sources)} chunks)"):
+                header = f"📚 Nguồn tham khảo ({len(sources)} chunks" + (f" | {retrieval_source}" if retrieval_source else "") + ")"
+                with st.expander(header):
                     for i, src in enumerate(sources, 1):
                         meta = src.get("metadata", {})
                         source_name = meta.get("source", "Unknown")
@@ -140,4 +147,6 @@ if query:
         "role": "assistant",
         "content": answer,
         "sources": sources,
+        "retrieval_source": retrieval_source,
     })
+
