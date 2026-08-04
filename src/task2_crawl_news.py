@@ -29,11 +29,14 @@ def setup_directory():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# TODO: Điền danh sách URL bài viết cần crawl
+# Nguồn: trang công khai RMIT Vietnam, phủ đủ 4 chủ đề gợi ý
+# (sự kiện, thư viện, hỗ trợ sinh viên, học bổng)
 ARTICLE_URLS = [
-    # Ví dụ (trang công khai RMIT Vietnam):
-    # "https://www.rmit.edu.vn/libraryvn/...",
-    # "https://www.rmit.edu.vn/students/...",
+    ("https://www.rmit.edu.vn/libraryvn/about-us/library-events/2026/rmit-library-seminar-2026", "library-seminar-2026-rmit"),
+    ("https://www.rmit.edu.vn/libraryvn/student-support", "library-student-support-rmit"),
+    ("https://www.rmit.edu.vn/students/student-news-and-events/student-events-2026/orientation-week-sem-2", "orientation-week-sem2-2026-rmit"),
+    ("https://www.rmit.edu.vn/news/all-news/2026/jan/rmit-vietnam-announces-record-2026-scholarships-worth-more-than-200-billion-vnd", "scholarships-record-2026-rmit"),
+    ("https://www.rmit.edu.vn/students/student-news-and-events/student-news/2026/newbie-101-unlock-library-power", "newbie-101-library-power-rmit"),
 ]
 
 
@@ -51,31 +54,33 @@ async def crawl_article(url: str) -> dict:
     """
     from crawl4ai import AsyncWebCrawler
 
-    # TODO: Implement crawling logic
-    # async with AsyncWebCrawler() as crawler:
-    #     result = await crawler.arun(url=url)
-    #     return {
-    #         "url": url,
-    #         "title": result.metadata.get("title", "Unknown"),
-    #         "date_crawled": datetime.now().isoformat(),
-    #         "content_markdown": result.markdown,
-    #     }
-    raise NotImplementedError("Implement crawl_article")
+    async with AsyncWebCrawler() as crawler:
+        result = await crawler.arun(url=url)
+        return {
+            "url": url,
+            "title": result.metadata.get("title", "Unknown"),
+            "date_crawled": datetime.now().isoformat(),
+            "content_markdown": result.markdown,
+        }
 
 
 async def crawl_all():
     """Crawl toàn bộ bài viết trong ARTICLE_URLS."""
     setup_directory()
 
-    for i, url in enumerate(ARTICLE_URLS, 1):
+    for i, (url, slug) in enumerate(ARTICLE_URLS, 1):
         print(f"[{i}/{len(ARTICLE_URLS)}] Crawling: {url}")
-        article = await crawl_article(url)
+        try:
+            article = await crawl_article(url)
+        except Exception as e:
+            print(f"  ✗ Lỗi crawl {url}: {e}")
+            continue
 
         # Lưu file JSON
-        filename = f"article_{i:02d}.json"
+        filename = f"{slug}.json"
         filepath = DATA_DIR / filename
         filepath.write_text(json.dumps(article, ensure_ascii=False, indent=2))
-        print(f"  ✓ Saved: {filepath}")
+        print(f"  ✓ Saved: {filepath} ({len(article['content_markdown'])} chars)")
 
 
 if __name__ == "__main__":
